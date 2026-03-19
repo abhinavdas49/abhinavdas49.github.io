@@ -183,11 +183,11 @@
     <a href="#contact" class="btn btn-ghost">Get in Touch</a>
   </div>
   <div class="hero-stats">
-    <div><div class="h-stat-num">+11<span>%</span></div><div class="h-stat-lbl">Thrust Efficiency Gain</div></div>
-    <div><div class="h-stat-num">-3.5<span>dB</span></div><div class="h-stat-lbl">Noise Reduction</div></div>
-    <div><div class="h-stat-num">+18<span>%</span></div><div class="h-stat-lbl">System Reliability</div></div>
     <div><div class="h-stat-num">$45<span>K</span></div><div class="h-stat-lbl">Warranty Savings</div></div>
     <div><div class="h-stat-num">26</div><div class="h-stat-lbl">Products Launched</div></div>
+    <div><div class="h-stat-num">+18<span>%</span></div><div class="h-stat-lbl">System Reliability</div></div>
+    <div><div class="h-stat-num">+11<span>%</span></div><div class="h-stat-lbl">Thrust Efficiency Gain</div></div>
+    <div><div class="h-stat-num">-3.5<span>dB</span></div><div class="h-stat-lbl">Noise Reduction</div></div>
     <div><div class="h-stat-num">3.5<span>/4</span></div><div class="h-stat-lbl">GPA</div></div>
   </div>
 </section>
@@ -521,9 +521,9 @@
   <h2 class="sec-title reveal">Get in Touch</h2>
   <p class="contact-sub reveal">Whether you want to discuss aerospace engineering, explore collaboration on a project, or talk about opportunities, I would love to hear from you.</p>
   <div class="contact-row reveal">
-    <a href="mailto:abhinavdas2005@gmail.com" target="_blank" rel="noopener noreferrer" class="contact-btn" onclick="event.preventDefault(); var w = window.open('mailto:abhinavdas2005@gmail.com','_blank'); if(!w || w.closed) { navigator.clipboard.writeText('abhinavdas2005@gmail.com').then(function(){ var el = document.getElementById('email-toast'); el.style.display='flex'; setTimeout(function(){ el.style.display='none'; },2500); }); }">
+    <a href="/cdn-cgi/l/email-protection#bcddded4d5d2ddcad8ddcf8e8c8c89fcdbd1ddd5d092dfd3d1" target="_blank" rel="noopener noreferrer" class="contact-btn" onclick="event.preventDefault(); var w = window.open('mailto:abhinavdas2005@gmail.com','_blank'); if(!w || w.closed) { navigator.clipboard.writeText('abhinavdas2005@gmail.com').then(function(){ var el = document.getElementById('email-toast'); el.style.display='flex'; setTimeout(function(){ el.style.display='none'; },2500); }); }">
       <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m2 7 10 7 10-7"/></svg>
-      abhinavdas2005@gmail.com
+      <span class="__cf_email__" data-cfemail="3352515b5a5d52455752400103030673545e525a5f1d505c5e">[email&#160;protected]</span>
     </a>
     <div id="email-toast" style="display:none; position:fixed; bottom:2rem; left:50%; transform:translateX(-50%); background:var(--green); color:#fff; padding:0.75rem 1.5rem; border-radius:6px; font-size:0.88rem; font-weight:600; z-index:999; align-items:center; gap:0.5rem; box-shadow:0 8px 30px rgba(0,0,0,0.4);">
       <svg width="16" height="16" fill="none" stroke="#fff" stroke-width="2.5" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg>
@@ -545,7 +545,7 @@
   <div>Mechanical &amp; Aerospace Engineering @ UNCC • © 2026</div>
 </footer>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
   const obs = new IntersectionObserver((entries) => {
     entries.forEach((e, i) => {
       if (e.isIntersecting) { setTimeout(() => e.target.classList.add('in'), i * 70); obs.unobserve(e.target); }
@@ -555,11 +555,4 @@
 
   const secs = document.querySelectorAll('section[id]');
   const links = document.querySelectorAll('nav a');
-  window.addEventListener('scroll', () => {
-    let cur = '';
-    secs.forEach(s => { if (window.scrollY >= s.offsetTop - 130) cur = s.id; });
-    links.forEach(a => { a.style.color = a.getAttribute('href') === '#' + cur ? 'var(--white)' : ''; });
-  });
-</script>
-</body>
-</html>
+  window.addEventListener('
