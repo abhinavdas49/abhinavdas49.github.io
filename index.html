@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Abhinav Das | Mechanical & Aerospace Engineering</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:        #0d0d0d;
+    --surface:   #141414;
+    --surface2:  #1c1c1c;
+    --border:    rgba(255,255,255,0.09);
+    --green:     #00703c;
+    --green-lt:  #00a356;
+    --green-dim: rgba(0,112,60,0.14);
+    --white:     #f2f2f2;
+    --body:      #c8c8c8;
+    --muted:     #7a7a7a;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { background: var(--bg); color: var(--body); font-family: 'Inter', sans-serif; font-size: 16px; line-height: 1.75; overflow-x: hidden; }
+
+  /* NAV */
+  nav { position: fixed; top: 0; left: 0; right: 0; z-index: 200; display: flex; align-items: center; justify-content: space-between; padding: 1rem 5vw; background: rgba(13,13,13,0.9); backdrop-filter: blur(18px); border-bottom: 1px solid var(--border); }
+  .nav-logo { font-weight: 800; font-size: 1.05rem; color: var(--white); text-decoration: none; }
+  .nav-logo span { color: var(--green-lt); }
+  nav ul { list-style: none; display: flex; gap: 2rem; }
+  nav a { color: var(--muted); text-decoration: none; font-size: 0.82rem; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; transition: color 0.2s; }
+  nav a:hover { color: var(--white); }
+
+  /* HERO */
+  #hero { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; padding: 6rem 5vw 4rem; position: relative; overflow: hidden; }
+  .hero-glow { position: absolute; inset: 0; pointer-events: none; background: radial-gradient(ellipse 55% 55% at 75% 35%, rgba(0,112,60,0.09) 0%, transparent 70%), radial-gradient(ellipse 35% 45% at 15% 75%, rgba(0,163,86,0.06) 0%, transparent 65%); }
+  .hero-eyebrow { font-size: 0.78rem; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--green-lt); margin-bottom: 1.2rem; opacity: 0; animation: fadeUp 0.7s 0.15s forwards; }
+  .hero-name { font-size: clamp(3.2rem, 8vw, 6.5rem); font-weight: 900; line-height: 0.95; letter-spacing: -0.03em; color: var(--white); margin-bottom: 1.5rem; opacity: 0; animation: fadeUp 0.7s 0.3s forwards; }
+  .hero-name em { color: var(--green-lt); font-style: normal; }
+  .hero-desc { font-size: 1.05rem; color: var(--body); line-height: 1.8; max-width: 580px; margin-bottom: 2.5rem; opacity: 0; animation: fadeUp 0.7s 0.45s forwards; }
+  .hero-ctas { display: flex; gap: 1rem; flex-wrap: wrap; opacity: 0; animation: fadeUp 0.7s 0.6s forwards; }
+  .btn { display: inline-block; padding: 0.8rem 1.8rem; border-radius: 4px; font-size: 0.82rem; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; text-decoration: none; transition: all 0.22s; border: none; cursor: pointer; }
+  .btn-solid { background: var(--green); color: #fff; }
+  .btn-solid:hover { background: #005a30; transform: translateY(-2px); box-shadow: 0 8px 28px rgba(0,112,60,0.4); }
+  .btn-ghost { background: transparent; color: var(--white); border: 1px solid rgba(255,255,255,0.18); }
+  .btn-ghost:hover { border-color: rgba(255,255,255,0.45); transform: translateY(-2px); }
+  .hero-stats { display: flex; gap: 3rem; flex-wrap: wrap; margin-top: 4rem; padding-top: 2.5rem; border-top: 1px solid var(--border); opacity: 0; animation: fadeUp 0.7s 0.75s forwards; }
+  .h-stat-num { font-size: 2rem; font-weight: 800; color: var(--white); line-height: 1; }
+  .h-stat-num span { color: var(--green-lt); }
+  .h-stat-lbl { font-size: 0.75rem; color: var(--muted); margin-top: 0.25rem; }
+
+  /* SECTIONS */
+  section { padding: 6rem 5vw; }
+  .sec-tag { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.22em; text-transform: uppercase; color: var(--green-lt); margin-bottom: 0.6rem; }
+  .sec-title { font-size: clamp(1.8rem, 3.5vw, 2.6rem); font-weight: 800; color: var(--white); letter-spacing: -0.02em; line-height: 1.15; margin-bottom: 0.75rem; }
+  .sec-lead { font-size: 1rem; color: var(--body); max-width: 620px; line-height: 1.8; margin-bottom: 3.5rem; }
+  .divider { height: 1px; background: var(--border); }
+
+  /* REVEAL */
+  .reveal { opacity: 0; transform: translateY(22px); transition: opacity 0.65s ease, transform 0.65s ease; }
+  .reveal.in { opacity: 1; transform: none; }
+
+  /* ABOUT */
+  #about { background: var(--surface); }
+  .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: start; }
+  .about-body p { color: var(--body); font-size: 1rem; line-height: 1.85; margin-bottom: 1.1rem; }
+  .about-body p strong { color: var(--white); font-weight: 600; }
+  .about-chips { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1.8rem; }
+  .chip { padding: 0.35rem 0.9rem; border: 1px solid var(--border); border-radius: 50px; font-size: 0.78rem; color: var(--body); transition: all 0.2s; }
+  .chip:hover { border-color: var(--green-lt); color: var(--green-lt); }
+  .about-meta { margin-top: 0.5rem; }
+  .meta-row { display: flex; align-items: baseline; gap: 1rem; padding: 0.85rem 0; border-bottom: 1px solid var(--border); }
+  .meta-row:first-child { border-top: 1px solid var(--border); }
+  .ml { font-size: 0.73rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); min-width: 105px; }
+  .mv { font-size: 0.92rem; color: var(--white); font-weight: 500; }
+
+  /* EXPERIENCE */
+  .exp-list { display: flex; flex-direction: column; }
+  .exp-row { display: grid; grid-template-columns: 190px 1fr; gap: 2.5rem; padding: 2.5rem 0; border-bottom: 1px solid var(--border); }
+  .exp-row:first-child { border-top: 1px solid var(--border); }
+  .exp-co { font-size: 0.92rem; font-weight: 700; color: var(--white); margin-bottom: 0.2rem; }
+  .exp-when, .exp-where { font-size: 0.78rem; color: var(--muted); }
+  .exp-pill { display: inline-block; margin-bottom: 0.7rem; padding: 0.22rem 0.65rem; border-radius: 3px; background: var(--green-dim); border: 1px solid rgba(0,163,86,0.3); font-size: 0.7rem; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase; color: var(--green-lt); }
+  .exp-role { font-size: 1.1rem; font-weight: 700; color: var(--white); margin-bottom: 0.6rem; }
+  .exp-outcome { font-size: 1rem; color: var(--white); font-weight: 500; line-height: 1.65; margin-bottom: 0.6rem; }
+  .exp-detail { font-size: 0.92rem; color: var(--body); line-height: 1.8; margin-bottom: 1rem; }
+  .exp-bullets { list-style: none; display: flex; flex-direction: column; gap: 0.4rem; margin-bottom: 1rem; }
+  .exp-bullets li { font-size: 0.9rem; color: var(--body); padding-left: 1.2rem; position: relative; line-height: 1.65; }
+  .exp-bullets li::before { content: '→'; position: absolute; left: 0; color: var(--green-lt); font-size: 0.78rem; top: 0.2rem; }
+  .exp-nums { display: flex; gap: 2rem; flex-wrap: wrap; margin-top: 1.1rem; padding-top: 1.1rem; border-top: 1px solid var(--border); }
+  .exp-num-val { font-size: 1.5rem; font-weight: 800; color: var(--green-lt); line-height: 1; }
+  .exp-num-lbl { font-size: 0.7rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.07em; margin-top: 0.15rem; }
+
+  /* PROJECTS */
+  #projects { background: var(--surface); }
+  .proj-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 1.5rem; }
+  .proj-card { background: var(--surface2); border: 1px solid var(--border); border-radius: 6px; overflow: hidden; display: flex; flex-direction: column; transition: transform 0.25s, box-shadow 0.25s, border-color 0.25s; }
+  .proj-card:hover { transform: translateY(-5px); box-shadow: 0 20px 55px rgba(0,0,0,0.5); border-color: rgba(0,163,86,0.3); }
+  .proj-top-bar { height: 3px; background: linear-gradient(90deg, var(--green), var(--green-lt)); }
+  .proj-body { padding: 1.8rem; flex: 1; display: flex; flex-direction: column; }
+  .proj-org { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: var(--green-lt); margin-bottom: 0.5rem; }
+  .proj-title { font-size: 1.05rem; font-weight: 700; color: var(--white); line-height: 1.35; margin-bottom: 0.6rem; }
+  .proj-outcome { font-size: 0.96rem; font-weight: 500; color: var(--white); line-height: 1.6; margin-bottom: 0.75rem; }
+  .proj-detail { font-size: 0.9rem; color: var(--body); line-height: 1.78; margin-bottom: 1.1rem; flex: 1; }
+  .proj-detail strong { color: var(--white); }
+  .proj-metrics { display: flex; gap: 1.5rem; flex-wrap: wrap; padding: 1rem 0; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); margin-bottom: 1rem; }
+  .pm-val { font-size: 1.25rem; font-weight: 800; color: var(--green-lt); line-height: 1; }
+  .pm-lbl { font-size: 0.68rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.07em; margin-top: 0.15rem; }
+  .proj-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+  .ptag { font-size: 0.72rem; padding: 0.2rem 0.6rem; background: rgba(255,255,255,0.05); border: 1px solid var(--border); border-radius: 3px; color: var(--muted); }
+
+  /* SKILLS */
+  .skills-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; }
+  .skill-group-title { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); margin-bottom: 1.4rem; padding-bottom: 0.7rem; border-bottom: 1px solid var(--border); }
+  .skill-row { margin-bottom: 1.1rem; }
+  .skill-top { display: flex; justify-content: space-between; margin-bottom: 0.35rem; }
+  .skill-name { font-size: 0.9rem; color: var(--white); font-weight: 500; }
+  .skill-pct { font-size: 0.78rem; color: var(--muted); }
+  .skill-track { height: 3px; background: rgba(255,255,255,0.07); border-radius: 2px; overflow: hidden; }
+  .skill-fill { height: 100%; background: linear-gradient(90deg, var(--green), var(--green-lt)); border-radius: 2px; }
+  .cert-row { display: flex; gap: 0.9rem; align-items: flex-start; padding: 0.9rem 0; border-bottom: 1px solid var(--border); }
+  .cert-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--green-lt); margin-top: 0.48rem; flex-shrink: 0; }
+  .cert-name { font-size: 0.9rem; color: var(--white); font-weight: 500; }
+  .cert-src { font-size: 0.78rem; color: var(--muted); margin-top: 0.1rem; }
+  .honor-card { display: flex; gap: 1rem; align-items: flex-start; padding: 1.1rem; background: var(--surface2); border: 1px solid var(--border); border-radius: 5px; margin-bottom: 0.8rem; transition: border-color 0.2s; }
+  .honor-card:hover { border-color: rgba(0,163,86,0.35); }
+  .honor-icon { font-size: 1.3rem; flex-shrink: 0; }
+  .honor-name { font-size: 0.9rem; color: var(--white); font-weight: 600; }
+  .honor-src { font-size: 0.78rem; color: var(--muted); margin-top: 0.1rem; }
+
+  /* PUBLICATIONS */
+  #publications { background: var(--surface); }
+  .pub-card { background: var(--surface2); border: 1px solid var(--border); border-radius: 6px; padding: 2rem; transition: border-color 0.22s; }
+  .pub-card:hover { border-color: rgba(0,163,86,0.35); }
+  .pub-journal { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--green-lt); margin-bottom: 0.5rem; }
+  .pub-title { font-size: 1.1rem; font-weight: 700; color: var(--white); line-height: 1.4; margin-bottom: 0.75rem; }
+  .pub-abstract { font-size: 0.95rem; color: var(--body); line-height: 1.82; margin-bottom: 1rem; }
+  .pub-meta { font-size: 0.8rem; color: var(--muted); }
+
+  /* CONTACT */
+  #contact { text-align: center; }
+  .contact-sub { font-size: 1rem; color: var(--body); max-width: 480px; margin: 0 auto 2.5rem; line-height: 1.8; }
+  .contact-row { display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap; }
+  .contact-btn { display: flex; align-items: center; gap: 0.55rem; padding: 0.9rem 1.7rem; background: var(--surface2); border: 1px solid var(--border); border-radius: 5px; color: var(--white); text-decoration: none; font-size: 0.88rem; font-weight: 500; transition: all 0.22s; }
+  .contact-btn:hover { border-color: var(--green-lt); color: var(--green-lt); transform: translateY(-2px); }
+
+  /* FOOTER */
+  footer { padding: 1.8rem 5vw; display: flex; align-items: center; justify-content: space-between; border-top: 1px solid var(--border); font-size: 0.8rem; color: var(--muted); }
+  .footer-logo { font-weight: 800; font-size: 0.95rem; color: var(--white); }
+  .footer-logo span { color: var(--green-lt); }
+
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: none; } }
+
+  @media (max-width: 860px) {
+    nav ul { gap: 1.2rem; }
+    .about-grid, .skills-grid { grid-template-columns: 1fr; gap: 3rem; }
+    .exp-row { grid-template-columns: 1fr; gap: 0.4rem; }
+    .hero-stats { gap: 2rem; }
+    footer { flex-direction: column; gap: 0.4rem; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="#hero" class="nav-logo">Abhinav<span>.</span></a>
+  <ul>
+    <li><a href="#about">About</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#publications">Research</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<section id="hero">
+  <div class="hero-glow"></div>
+  <p class="hero-eyebrow">Mechanical &amp; Aerospace Engineering @ UNCC</p>
+  <h1 class="hero-name">Abhinav<br><em>Das.</em></h1>
+  <p class="hero-desc">Designing the future of flight and energy infrastructure: from publishing research on toroidal UAV propulsion to engineering large generator systems at Siemens Energy. NASA L'SPACE Scholar. AIAA DBF Lead Structural Engineer. Class of 2027.</p>
+  <div class="hero-ctas">
+    <a href="#experience" class="btn btn-solid">View Experience</a>
+    <a href="#contact" class="btn btn-ghost">Get in Touch</a>
+  </div>
+  <div class="hero-stats">
+    <div><div class="h-stat-num">+11<span>%</span></div><div class="h-stat-lbl">Thrust Efficiency Gain</div></div>
+    <div><div class="h-stat-num">-3.5<span>dB</span></div><div class="h-stat-lbl">Noise Reduction</div></div>
+    <div><div class="h-stat-num">+18<span>%</span></div><div class="h-stat-lbl">System Reliability</div></div>
+    <div><div class="h-stat-num">$45<span>K</span></div><div class="h-stat-lbl">Warranty Savings</div></div>
+    <div><div class="h-stat-num">26</div><div class="h-stat-lbl">Products Launched</div></div>
+    <div><div class="h-stat-num">3.5<span>/4</span></div><div class="h-stat-lbl">GPA</div></div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<section id="about">
+  <div class="about-grid">
+    <div class="reveal">
+      <p class="sec-tag">About Me</p>
+      <h2 class="sec-title">Bridging Aerospace Technology &amp; Industrial Engineering</h2>
+      <div class="about-body">
+        <p>I am a <strong>Mechanical Engineering undergraduate at UNC Charlotte</strong> (Class of 2027), concentrating in Aerospace Engineering with a minor in Mathematics. My passion sits at the intersection of complex system design, aerodynamics, and industrial manufacturing.</p>
+        <p>My work spans from <strong>independent research published in Engineering Archive</strong> to building and launching 26 products at <strong>Doosan Bobcat</strong>, where I also saved $45,000 in warranty costs through root cause analysis. This summer I join <strong>Siemens Energy</strong> as a Large Generator Design Engineer Intern.</p>
+        <p>I currently serve as <strong>Lead Structural Engineer on the AIAA Design, Build, Fly competition team</strong>, managing a team of 4 to design and manufacture a mission-specific UAV. I am also expanding my systems engineering and mission protocol skills as a <strong>NASA L'SPACE NPWEE Scholar</strong>, leading the technical lifecycle of a research proposal up to $10,000.</p>
+      </div>
+      <div class="about-chips">
+        <span class="chip">Dean's List</span>
+        <span class="chip">NC Space Grant Scholar</span>
+        <span class="chip">NASA L'SPACE Scholar</span>
+        <span class="chip">Published Researcher</span>
+        <span class="chip">AIAA DBF Lead Engineer</span>
+        <span class="chip">AIAA Member</span>
+        <span class="chip">ASME Member</span>
+      </div>
+    </div>
+    <div class="reveal">
+      <p class="sec-tag">Details</p>
+      <div class="about-meta">
+        <div class="meta-row"><span class="ml">School</span><span class="mv">UNC Charlotte</span></div>
+        <div class="meta-row"><span class="ml">Degree</span><span class="mv">B.S. Mechanical Engineering</span></div>
+        <div class="meta-row"><span class="ml">Concentration</span><span class="mv">Aerospace Engineering</span></div>
+        <div class="meta-row"><span class="ml">Minor</span><span class="mv">Mathematics</span></div>
+        <div class="meta-row"><span class="ml">GPA</span><span class="mv">3.5 / 4.0</span></div>
+        <div class="meta-row"><span class="ml">Graduation</span><span class="mv">May 2027</span></div>
+        <div class="meta-row"><span class="ml">Location</span><span class="mv">Charlotte, NC</span></div>
+        <div class="meta-row"><span class="ml">Status</span><span class="mv">Open to full-time 2027 roles</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<section id="experience">
+  <p class="sec-tag reveal">Career</p>
+  <h2 class="sec-title reveal">Experience</h2>
+  <p class="sec-lead reveal">Roles where I have applied engineering skills to real-world problems: from energy infrastructure to aerospace R&amp;D.</p>
+  <div class="exp-list">
+
+    <div class="exp-row reveal">
+      <div>
+        <div class="exp-co">Siemens Energy</div>
+        <div class="exp-when">May 2026 – Aug 2026</div>
+        <div class="exp-where">Charlotte, NC</div>
+      </div>
+      <div>
+        <div class="exp-pill">Incoming</div>
+        <div class="exp-role">Large Generator Design Engineer Intern</div>
+        <p class="exp-outcome">Contributing to the systems engineering, design, and structural integrity of large-scale power generators that power energy infrastructure globally.</p>
+        <p class="exp-detail">Joining Siemens Energy's generator engineering team to apply cross-functional engineering principles to support large-scale manufacturing and continuous improvement initiatives within heavy industry.</p>
+      </div>
+    </div>
+
+    <div class="exp-row reveal">
+      <div>
+        <div class="exp-co">NASA L'SPACE</div>
+        <div class="exp-when">Jan 2026 – Present</div>
+        <div class="exp-where">Remote</div>
+      </div>
+      <div>
+        <div class="exp-pill">Active</div>
+        <div class="exp-role">NPWEE Program Scholar</div>
+        <p class="exp-outcome">Selected competitively to lead the technical lifecycle of a research proposal up to $10,000, flowing down NASA mission requirements to subsystem designs.</p>
+        <p class="exp-detail">Working through the NASA L'SPACE NPWEE Academy curriculum modeled after NASA's actual project development lifecycle, from concept definition through implementation planning.</p>
+        <ul class="exp-bullets">
+          <li>Leading technical development of a proposal seeking $10,000 in seed funding to address defined NASA technology gaps</li>
+          <li>Designing and validating mission-critical components in Siemens NX to meet NASA solicitation requirements and technical feasibility standards</li>
+          <li>Conducting technical compliance reviews for peer proposals using official NASA scoring rubrics to evaluate design viability and safety</li>
+          <li>Performing trade study evaluations to select optimal components, balancing weight, cost, and performance metrics</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="exp-row reveal">
+      <div>
+        <div class="exp-co">Doosan Bobcat</div>
+        <div class="exp-when">May – Dec 2025</div>
+        <div class="exp-where">Charlotte, NC</div>
+      </div>
+      <div>
+        <div class="exp-role">Product Service Engineer Intern</div>
+        <p class="exp-outcome">Improved system reliability by 18%, saved $45,000 in warranty costs, and supported the launch of 26 products while cutting timelines by 15%.</p>
+        <p class="exp-detail">Embedded within the product service engineering team, contributing to reliability testing, technical documentation, and product launch support. Led a hardware design project from concept through mass production and deployment to Bobcat dealers across North America.</p>
+        <ul class="exp-bullets">
+          <li>Led a reliability initiative using Root Cause Analysis (RCA) to identify failure modes; implemented engineering changes that improved system reliability by 18% on a new industrial air product line</li>
+          <li>Analyzed field data to validate engineering models, initiating customer-driven design improvements that saved $45,000 in annual warranty costs</li>
+          <li>Designed a control system emulator in Creo that was mass-produced and deployed to Bobcat dealers across North America, executing the complete layout of electrical wiring and schematics</li>
+          <li>Supported 26 product launches and cut timelines by 15% by managing design reviews and coordinating workflows between engineering and manufacturing</li>
+          <li>Created standardized work instructions and technical documentation for the mass-produced control system emulator</li>
+        </ul>
+        <div class="exp-nums">
+          <div><div class="exp-num-val">+18%</div><div class="exp-num-lbl">System Reliability</div></div>
+          <div><div class="exp-num-val">$45K</div><div class="exp-num-lbl">Warranty Savings</div></div>
+          <div><div class="exp-num-val">26</div><div class="exp-num-lbl">Products Launched</div></div>
+          <div><div class="exp-num-val">-15%</div><div class="exp-num-lbl">Timeline Reduction</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="exp-row reveal">
+      <div>
+        <div class="exp-co">ASME @ UNCC</div>
+        <div class="exp-when">Jan 2024 – Oct 2025</div>
+        <div class="exp-where">Charlotte, NC</div>
+      </div>
+      <div>
+        <div class="exp-role">Social Media Manager</div>
+        <p class="exp-outcome">Grew the chapter's digital presence and communicated engineering events and opportunities to 500+ students across campus.</p>
+        <p class="exp-detail">Managed all social media channels for the UNC Charlotte ASME chapter, creating content that highlighted initiatives, member achievements, and technical workshops, increasing student engagement with the organization.</p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<section id="projects">
+  <p class="sec-tag reveal">Featured Work</p>
+  <h2 class="sec-title reveal">Projects</h2>
+  <p class="sec-lead reveal">Technical projects with clear objectives, defined contributions, and quantified outcomes built on the inverted pyramid style: result first, context second.</p>
+  <div class="proj-grid">
+
+    <div class="proj-card reveal">
+      <div class="proj-top-bar"></div>
+      <div class="proj-body">
+        <div class="proj-org">Independent R&amp;D • NC Space Grant • Published</div>
+        <div class="proj-title">Aero-Acoustic Optimization of Toroidal UAV Propulsion Systems</div>
+        <div class="proj-outcome">Achieved an 11% thrust increase and 3.5 dB noise reduction over standard OEM designs, validating a new propeller geometry for Urban Air Mobility applications.</div>
+        <div class="proj-detail">
+          <strong>Objective:</strong> Standard UAV propellers produce excessive noise and inefficiency due to blade-tip vortices. The goal was to design, fabricate, and test a toroidal (closed-loop) propeller that addresses both problems at once.<br><br>
+          <strong>My Contribution:</strong> Modeled toroidal propeller geometries in SolidWorks with NACA 2415 airfoils, optimizing blade curvature for maximum thrust efficiency. Built a topology-optimized FDM test fixture with a 2200KV brushless system and Arduino-based DAQ to measure static thrust up to 21,000 RPM. Performed static fire testing to quantify acoustic profiles, achieving 300g sustained thrust.
+        </div>
+        <div class="proj-metrics">
+          <div><div class="pm-val">+11%</div><div class="pm-lbl">Thrust Efficiency</div></div>
+          <div><div class="pm-val">-3.5dB</div><div class="pm-lbl">Noise Reduction</div></div>
+          <div><div class="pm-val">300g</div><div class="pm-lbl">Sustained Thrust</div></div>
+        </div>
+        <div class="proj-tags">
+          <span class="ptag">SolidWorks</span><span class="ptag">FDM 3D Printing</span><span class="ptag">Arduino</span><span class="ptag">Blade Element Theory</span><span class="ptag">Data Acquisition</span><span class="ptag">NACA 2415</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="proj-card reveal">
+      <div class="proj-top-bar"></div>
+      <div class="proj-body">
+        <div class="proj-org">AIAA Design, Build, Fly • Competition Team</div>
+        <div class="proj-title">AIAA DBF Competition UAV — Lead Structural Engineer</div>
+        <div class="proj-outcome">Managing a team of 4 engineers to design and manufacture a mission-specific UAV within an 8-month competition timeline, reducing airframe mass by 15% through topology optimization.</div>
+        <div class="proj-detail">
+          <strong>Objective:</strong> Design, build, and fly a competition-compliant UAV that meets strict mission requirements set by the AIAA Design, Build, Fly rules.<br><br>
+          <strong>My Contribution:</strong> Leading structural design of the wing assembly using SolidWorks and FEA to verify structural integrity under 3 Gs of loading. Optimized the strength-to-weight ratio via topology optimization to reduce airframe mass by 15%.
+        </div>
+        <div class="proj-metrics">
+          <div><div class="pm-val">-15%</div><div class="pm-lbl">Airframe Mass</div></div>
+          <div><div class="pm-val">3G</div><div class="pm-lbl">Structural Rating</div></div>
+          <div><div class="pm-val">4</div><div class="pm-lbl">Engineers Led</div></div>
+        </div>
+        <div class="proj-tags">
+          <span class="ptag">SolidWorks</span><span class="ptag">FEA</span><span class="ptag">Topology Optimization</span><span class="ptag">Team Leadership</span><span class="ptag">Manufacturing</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="proj-card reveal">
+      <div class="proj-top-bar"></div>
+      <div class="proj-body">
+        <div class="proj-org">Doosan Bobcat • Internship Project</div>
+        <div class="proj-title">Control System Emulator for Multi-Compressor Integration</div>
+        <div class="proj-outcome">Designed and built a functional hardware emulator that was mass-produced and deployed to Bobcat dealers across North America for control logic validation.</div>
+        <div class="proj-detail">
+          <strong>Objective:</strong> Enable testing of control system logic across multiple integrated air compressor units without requiring full production hardware.<br><br>
+          <strong>My Contribution:</strong> Led the full design-to-implementation process in Creo, including 3D layout, electrical wiring diagrams, and schematic documentation. Created standardized work instructions for mass production, producing a working emulator deployed to dealers nationwide.
+        </div>
+        <div class="proj-metrics">
+          <div><div class="pm-val">Multi</div><div class="pm-lbl">System Integration</div></div>
+          <div><div class="pm-val">Full</div><div class="pm-lbl">Wiring Layout</div></div>
+          <div><div class="pm-val">NA-Wide</div><div class="pm-lbl">Deployment</div></div>
+        </div>
+        <div class="proj-tags">
+          <span class="ptag">Creo CAD</span><span class="ptag">Electrical Schematics</span><span class="ptag">Systems Design</span><span class="ptag">DFM</span><span class="ptag">R&amp;D</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="proj-card reveal">
+      <div class="proj-top-bar"></div>
+      <div class="proj-body">
+        <div class="proj-org">UNC Charlotte • Team Project</div>
+        <div class="proj-title">Go-Kart Telemetry &amp; Active Safety System</div>
+        <div class="proj-outcome">Engineered a telemetry and active safety system that logs brake temperatures up to 140°C, tracks throttle position within 1-degree accuracy, and triggers airbag warnings in under 50 ms.</div>
+        <div class="proj-detail">
+          <strong>Objective:</strong> Build an integrated data acquisition and safety system for a go-kart platform, combining real-time telemetry with active driver protection.<br><br>
+          <strong>My Contribution:</strong> Led the team as Team Lead. Designed custom 3D-printed sensor mounts for brake temperature and throttle position logging. Programmed an accelerometer algorithm to measure cornering forces up to 3 Gs and trigger an airbag impact warning in under 50 ms.
+        </div>
+        <div class="proj-metrics">
+          <div><div class="pm-val">140°C</div><div class="pm-lbl">Brake Temp Logging</div></div>
+          <div><div class="pm-val">1°</div><div class="pm-lbl">Throttle Accuracy</div></div>
+          <div><div class="pm-val">&lt;50ms</div><div class="pm-lbl">Safety Response</div></div>
+        </div>
+        <div class="proj-tags">
+          <span class="ptag">Sensor Integration</span><span class="ptag">3D Printing</span><span class="ptag">Accelerometer</span><span class="ptag">Data Acquisition</span><span class="ptag">Rapid Prototyping</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="proj-card reveal">
+      <div class="proj-top-bar"></div>
+      <div class="proj-body">
+        <div class="proj-org">NASA L'SPACE NPWEE Academy</div>
+        <div class="proj-title">Aerospace Mission Protocol Development</div>
+        <div class="proj-outcome">Leading the technical lifecycle of a $10,000 research proposal through NASA's structured project development lifecycle as part of a competitive national scholar cohort.</div>
+        <div class="proj-detail">
+          <strong>Objective:</strong> Build applied competency in NASA-standard mission design processes and systems engineering methodology.<br><br>
+          <strong>My Contribution:</strong> Leading technical development of a proposal to address defined NASA technology gaps. Designing and validating mission-critical components in Siemens NX. Performing trade study evaluations and conducting peer reviews using official NASA scoring rubrics.
+        </div>
+        <div class="proj-metrics">
+          <div><div class="pm-val">$10K</div><div class="pm-lbl">Proposal Budget</div></div>
+          <div><div class="pm-val">NASA</div><div class="pm-lbl">Affiliated Program</div></div>
+          <div><div class="pm-val">2026</div><div class="pm-lbl">Active</div></div>
+        </div>
+        <div class="proj-tags">
+          <span class="ptag">Systems Engineering</span><span class="ptag">Mission Design</span><span class="ptag">Trade Studies</span><span class="ptag">Siemens NX</span><span class="ptag">Aerospace</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="proj-card reveal">
+      <div class="proj-top-bar"></div>
+      <div class="proj-body">
+        <div class="proj-org">UNC Charlotte • Junior Design</div>
+        <div class="proj-title">Pick-and-Place Robot — Team Lead</div>
+        <div class="proj-outcome">Directed an 8-member engineering team to build an autonomous pick-and-place robot that accurately sorts 9 color-coded blocks into 9 designated spaces in under 75 seconds.</div>
+        <div class="proj-detail">
+          <strong>Objective:</strong> Design and build a robot capable of both autonomous and manual pick-and-place operations, sorting color-coded blocks into correct positions within a strict time constraint.<br><br>
+          <strong>My Contribution:</strong> Led the full project as Team Lead, orchestrating weekly milestone reviews and delegating technical deliverables to ensure 100% on-time completion. Programmed the Arduino microcontroller to execute autonomous and manual sorting operations with reliable color detection and placement accuracy.
+        </div>
+        <div class="proj-metrics">
+          <div><div class="pm-val">&lt;75s</div><div class="pm-lbl">Completion Time</div></div>
+          <div><div class="pm-val">9/9</div><div class="pm-lbl">Block Accuracy</div></div>
+          <div><div class="pm-val">8</div><div class="pm-lbl">Engineers Led</div></div>
+        </div>
+        <div class="proj-tags">
+          <span class="ptag">Arduino</span><span class="ptag">Mechatronics</span><span class="ptag">Automation</span><span class="ptag">Team Leadership</span><span class="ptag">Rapid Prototyping</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<section id="skills">
+  <p class="sec-tag reveal">Technical Toolkit</p>
+  <h2 class="sec-title reveal">Skills &amp; Certifications</h2>
+  <p class="sec-lead reveal">Software, tools, and methodologies I use to design, analyze, and build engineering systems.</p>
+  <div class="skills-grid">
+    <div class="reveal">
+      <p class="skill-group-title">CAD &amp; Design Software</p>
+      <div class="skill-row"><div class="skill-top"><span class="skill-name">SolidWorks</span><span class="skill-pct">95%</span></div><div class="skill-track"><div class="skill-fill" style="width:95%"></div></div></div>
+      <div class="skill-row"><div class="skill-top"><span class="skill-name">Siemens NX</span><span class="skill-pct">90%</span></div><div class="skill-track"><div class="skill-fill" style="width:90%"></div></div></div>
+      <div class="skill-row"><div class="skill-top"><span class="skill-name">Creo (PTC)</span><span class="skill-pct">85%</span></div><div class="skill-track"><div class="skill-fill" style="width:85%"></div></div></div>
+      <div class="skill-row"><div class="skill-top"><span class="skill-name">AutoCAD</span><span class="skill-pct">80%</span></div><div class="skill-track"><div class="skill-fill" style="width:80%"></div></div></div>
+
+      <p class="skill-group-title" style="margin-top:2.5rem">Analysis &amp; Engineering</p>
+      <div class="skill-row"><div class="skill-top"><span class="skill-name">Finite Element Analysis (FEA)</span><span class="skill-pct">85%</span></div><div class="skill-track"><div class="skill-fill" style="width:85%"></div></div></div>
+      <div class="skill-row"><div class="skill-top"><span class="skill-name">GD&amp;T (ASME Y14.5)</span><span class="skill-pct">90%</span></div><div class="skill-track"><div class="skill-fill" style="width:90%"></div></div></div>
+      <div class="skill-row"><div class="skill-top"><span class="skill-name">Arduino / Data Acquisition</span><span class="skill-pct">82%</span></div><div class="skill-track"><div class="skill-fill" style="width:82%"></div></div></div>
+      <div class="skill-row"><div class="skill-top"><span class="skill-name">MATLAB</span><span class="skill-pct">72%</span></div><div class="skill-track"><div class="skill-fill" style="width:72%"></div></div></div>
+
+      <p class="skill-group-title" style="margin-top:2.5rem">Programming &amp; Data</p>
+      <div class="skill-row"><div class="skill-top"><span class="skill-name">Python</span><span class="skill-pct">78%</span></div><div class="skill-track"><div class="skill-fill" style="width:78%"></div></div></div>
+      <div class="skill-row"><div class="skill-top"><span class="skill-name">C++</span><span class="skill-pct">70%</span></div><div class="skill-track"><div class="skill-fill" style="width:70%"></div></div></div>
+      <div class="skill-row"><div class="skill-top"><span class="skill-name">LabVIEW</span><span class="skill-pct">72%</span></div><div class="skill-track"><div class="skill-fill" style="width:72%"></div></div></div>
+      <div class="skill-row"><div class="skill-top"><span class="skill-name">Advanced Excel / Tableau</span><span class="skill-pct">75%</span></div><div class="skill-track"><div class="skill-fill" style="width:75%"></div></div></div>
+    </div>
+
+    <div class="reveal">
+      <p class="skill-group-title">Certifications</p>
+      <div class="cert-row"><div class="cert-dot"></div><div><div class="cert-name">Lean Six Sigma Green Belt</div><div class="cert-src">Professional Certification</div></div></div>
+      <div class="cert-row"><div class="cert-dot"></div><div><div class="cert-name">GD&amp;T (ASME Y14.5)</div><div class="cert-src">Geomiq • Dec 2025</div></div></div>
+      <div class="cert-row"><div class="cert-dot"></div><div><div class="cert-name">Google Project Management Professional Certificate</div><div class="cert-src">Google • Nov 2025</div></div></div>
+
+      <p class="skill-group-title" style="margin-top:2.5rem">Honors &amp; Awards</p>
+      <div class="honor-card"><div class="honor-icon">🚀</div><div><div class="honor-name">NC Space Grant Scholar</div><div class="honor-src">North Carolina Space Grant / NASA • Mar 2026: Competitive grant awarded for aerospace research</div></div></div>
+      <div class="honor-card"><div class="honor-icon">🎓</div><div><div class="honor-name">Dean's List</div><div class="honor-src">UNC Charlotte • Dec 2025</div></div></div>
+      <div class="honor-card"><div class="honor-icon">📄</div><div><div class="honor-name">Published Researcher</div><div class="honor-src">Engineering Archive • Feb 2026</div></div></div>
+
+      <p class="skill-group-title" style="margin-top:2.5rem">Additional Competencies</p>
+      <div class="cert-row"><div class="cert-dot"></div><div><div class="cert-name">Systems &amp; Research</div><div class="cert-src">Trade Studies, Cost Estimating, Spacecraft Integration, Material Procurement</div></div></div>
+      <div class="cert-row"><div class="cert-dot"></div><div><div class="cert-name">Mechatronics &amp; Prototyping</div><div class="cert-src">Automated Systems, Hardware Design, GSE, Sensor Integration, Rapid Prototyping</div></div></div>
+      <div class="cert-row"><div class="cert-dot"></div><div><div class="cert-name">Manufacturing &amp; Design</div><div class="cert-src">Design for Manufacturing (DFM), Fabrication, 3D Modeling, Industrial Automation</div></div></div>
+      <div class="cert-row"><div class="cert-dot"></div><div><div class="cert-name">Leadership &amp; Communication</div><div class="cert-src">Cross-Functional Leadership, Stakeholder Management, Strategic Communication, Technical Documentation</div></div></div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<section id="publications">
+  <p class="sec-tag reveal">Research</p>
+  <h2 class="sec-title reveal">Publication</h2>
+  <p class="sec-lead reveal">Peer-reviewed research presented at the 2026 NC Space Grant Symposium and published in Engineering Archive.</p>
+  <a href="https://doi.org/10.31224/6524" target="_blank" style="text-decoration: none; color: inherit; display: block;" class="reveal">
+    <div class="pub-card">
+      <div class="pub-journal">Engineering Archive • Feb 2, 2026</div>
+      <div class="pub-title">Aero-Acoustic Optimization and Experimental Validation of a NACA 2415 Toroidal UAV Propeller</div>
+      <div class="pub-abstract">This research addresses the dual challenges of aerodynamic inefficiency and high-frequency noise in small Unmanned Aircraft Systems (sUAS). By transitioning from standard open-tipped blades to a toroidal (closed-loop) geometry, the study demonstrates how eliminating blade-tip vortices, the primary source of induced drag and acoustic signatures, produces measurable improvements in both thrust efficiency and noise output. Results were experimentally validated using a custom-built static test fixture and Arduino-based data acquisition system, achieving an 11% thrust increase and 3.5 dB noise reduction at 300g sustained thrust.</div>
+      <div class="pub-meta">Abhinav Das • UNC Charlotte • Presented at the 2026 NC Space Grant Symposium</div>
+    </div>
+  </a>
+</section>
+
+<div class="divider"></div>
+
+<section id="contact">
+  <p class="sec-tag reveal">Let's Connect</p>
+  <h2 class="sec-title reveal">Get in Touch</h2>
+  <p class="contact-sub reveal">Whether you want to discuss aerospace engineering, explore collaboration on a project, or talk about opportunities, I would love to hear from you.</p>
+  <div class="contact-row reveal">
+    <a href="mailto:abhinavdas2005@gmail.com" target="_blank" rel="noopener noreferrer" class="contact-btn" onclick="event.preventDefault(); var w = window.open('mailto:abhinavdas2005@gmail.com','_blank'); if(!w || w.closed) { navigator.clipboard.writeText('abhinavdas2005@gmail.com').then(function(){ var el = document.getElementById('email-toast'); el.style.display='flex'; setTimeout(function(){ el.style.display='none'; },2500); }); }">
+      <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m2 7 10 7 10-7"/></svg>
+      abhinavdas2005@gmail.com
+    </a>
+    <div id="email-toast" style="display:none; position:fixed; bottom:2rem; left:50%; transform:translateX(-50%); background:var(--green); color:#fff; padding:0.75rem 1.5rem; border-radius:6px; font-size:0.88rem; font-weight:600; z-index:999; align-items:center; gap:0.5rem; box-shadow:0 8px 30px rgba(0,0,0,0.4);">
+      <svg width="16" height="16" fill="none" stroke="#fff" stroke-width="2.5" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg>
+      Email copied to clipboard!
+    </div>
+    <a href="tel:+17178949047" class="contact-btn">
+      <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+      (717) 894-9047
+    </a>
+    <a href="https://linkedin.com/in/abhinavdas49" target="_blank" class="contact-btn">
+      <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+      LinkedIn
+    </a>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-logo">Abhinav <span>Das</span></div>
+  <div>Mechanical &amp; Aerospace Engineering @ UNCC • © 2026</div>
+</footer>
+
+<script>
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) { setTimeout(() => e.target.classList.add('in'), i * 70); obs.unobserve(e.target); }
+    });
+  }, { threshold: 0.08 });
+  document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+
+  const secs = document.querySelectorAll('section[id]');
+  const links = document.querySelectorAll('nav a');
+  window.addEventListener('scroll', () => {
+    let cur = '';
+    secs.forEach(s => { if (window.scrollY >= s.offsetTop - 130) cur = s.id; });
+    links.forEach(a => { a.style.color = a.getAttribute('href') === '#' + cur ? 'var(--white)' : ''; });
+  });
+</script>
+</body>
+</html>
